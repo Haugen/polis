@@ -4,7 +4,9 @@ require('dotenv').config();
 
 const app = express();
 
-const { polisRoutes } = require('./src/polis');
+const { scheduleFetch, polisRoutes } = require('./src/polis');
+
+scheduleFetch();
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER_NAME}:${
   process.env.MONGO_USER_PASSWORD

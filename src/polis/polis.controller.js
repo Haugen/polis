@@ -16,7 +16,6 @@ exports.fetchEvents = async (req, res, nex) => {
     for (let i = 0; i < polisData.length; i++) {
       try {
         await Event.create(polisData[i]);
-        console.log(polisData[i].id);
         eventIds.push(polisData[i].id);
       } catch (error) {
         errors.push(error);

@@ -18,7 +18,14 @@ app.use('/', (req, res, next) => {
   });
 });
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(
+  MONGODB_URI,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  }
+);
 const db = mongoose.connection;
 db.on('error', () => console.log('Connection error.'));
 db.on('open', () => {

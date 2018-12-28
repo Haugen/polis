@@ -2,20 +2,57 @@ const axios = require('axios');
 
 const Event = require('./polis.model');
 
-const tempaData = require('../../example-data');
+// const tempaData = require('../../example-data');
 const POLIS_API_URL = 'https://polisen.se/api/events';
 
-exports.getEvents = async (req, res, nex) => {
-  // const response = await axios.get(POLIS_API_URL);
-  // const polisData = response.data;
+exports.fetchEvents = async (req, res, nex) => {
+  try {
+    const response = await axios.get(POLIS_API_URL);
+    const polisData = response.data;
 
-  Event.create({
-    id: 12324,
-    name: 'test'
-  });
+    const errors = [];
+    const eventIds = [];
 
-  res.json({
-    message: 'fetched!!',
-    data: tempaData
-  });
+    for (let i = 0; i < polisData.length; i++) {
+      try {
+        await Event.create(polisData[i]);
+        console.log(polisData[i].id);
+        eventIds.push(polisData[i].id);
+      } catch (error) {
+        errors.push(error);
+      }
+
+      if (errors.length > 10) {
+        break;
+      }
+    }
+
+    res.status(200).json({
+      message: 'Created events and potential errors.',
+      eventIds: eventIds,
+      errors: errors
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching new events.',
+      errors: error
+    });
+  }
+};
+
+exports.getLatestEvents = async (req, res, next) => {
+  try {
+    let limit = Number(req.query.limit) || 10;
+
+    const events = await Event.find()
+      .sort({ id: 'desc' })
+      .limit(limit);
+
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error getting events.',
+      errors: error
+    });
+  }
 };

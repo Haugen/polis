@@ -4,6 +4,7 @@ const router = express.Router();
 
 const polisController = require('./polis.controller');
 
-router.get('/events', polisController.getEvents);
+router.get('/events/fetch', polisController.fetchEvents);
+router.get('/events/get-latest', polisController.getLatestEvents);
 
 module.exports = router;

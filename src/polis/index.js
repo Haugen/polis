@@ -9,7 +9,7 @@ const polisRoutes = require('./polis.routes');
 const scheduleFetch = () =>
   schedule.scheduleJob('0 */1 * * *', async function(req, res, next) {
     console.log('Starting hourly fetching process.', new Date());
-    const response = await axios.get('http://localhost:3000/api/events/fetch');
+    const response = await axios.get(req.headers.host + '/api/events/fetch');
     const data = response.data;
 
     console.log(data);

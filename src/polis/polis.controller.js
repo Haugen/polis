@@ -21,7 +21,7 @@ exports.fetchEvents = async (req, res, nex) => {
         errors.push(error);
       }
 
-      if (errors.length > 10) {
+      if (errors.length > 5) {
         break;
       }
     }

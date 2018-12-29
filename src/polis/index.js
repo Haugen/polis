@@ -12,7 +12,8 @@ const scheduleFetch = () =>
     const response = await axios.get(process.env.BASE_URL + 'api/events/fetch');
     const data = response.data;
 
-    console.log(data);
+    console.log(data.message);
+    console.log(data.eventIds);
   });
 
 module.exports = {

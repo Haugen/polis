@@ -7,7 +7,7 @@ const polisRoutes = require('./polis.routes');
  * Schedule houerly fetch of new events from remote API.
  */
 const scheduleFetch = () =>
-  schedule.scheduleJob('27 */1 * * *', async function(req, res, next) {
+  schedule.scheduleJob('*/28 * * * *', async function(req, res, next) {
     console.log('Starting hourly fetching process.', new Date());
     const response = await axios.get(process.env.BASE_URL + 'api/events/fetch');
     const data = response.data;

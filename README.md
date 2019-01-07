@@ -1,3 +1,3 @@
 # Polis events
 
-An investigation in Swedish police events data.
+Backend for gathering Swedish police notification data.

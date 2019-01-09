@@ -12,6 +12,16 @@ const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER_NAME}:${
   process.env.MONGO_USER_PASSWORD
 }@${process.env.MONGO_CLUSTER}/events?retryWrites=true`;
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE'
+  );
+
+  next();
+});
+
 app.use('/api', polisRoutes);
 
 app.use('/', (req, res, next) => {
@@ -31,5 +41,5 @@ mongoose.connect(
 const db = mongoose.connection;
 db.on('error', () => console.log('Connection error.'));
 db.on('open', () => {
-  app.listen(process.env.PORT || 3000);
+  app.listen(process.env.PORT || 3001);
 });

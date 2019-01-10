@@ -55,3 +55,31 @@ exports.getLatestEvents = async (req, res, next) => {
     });
   }
 };
+
+exports.getCategories = async (req, res, next) => {
+  try {
+    const categories = await Event.distinct('type');
+    categories.sort();
+
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error getting categories.',
+      errors: error
+    });
+  }
+};
+
+exports.getLocations = async (req, res, next) => {
+  try {
+    const locations = await Event.distinct('location.name');
+    locations.sort();
+
+    res.status(200).json(locations);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error getting categories.',
+      errors: error
+    });
+  }
+};

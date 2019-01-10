@@ -6,7 +6,9 @@ const app = express();
 
 const { scheduleFetch, polisRoutes } = require('./src/polis');
 
-scheduleFetch();
+if (process.env.BASE_URL !== 'http://localhost:3001/') {
+  scheduleFetch();
+}
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER_NAME}:${
   process.env.MONGO_USER_PASSWORD

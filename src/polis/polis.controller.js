@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const Event = require('./polis.model');
 
-// const tempaData = require('../../example-data');
 const POLIS_API_URL = 'https://polisen.se/api/events';
 
 exports.fetchEvents = async (req, res, nex) => {
@@ -43,9 +42,18 @@ exports.getLatestEvents = async (req, res, next) => {
   try {
     let limit = Number(req.query.limit) || 10;
 
-    const events = await Event.find()
+    const query = Event.find()
       .sort({ id: 'desc' })
       .limit(limit);
+
+    if (req.query.location) {
+      query.where({ 'location.name': req.query.location });
+    }
+    if (req.query.category) {
+      query.where({ type: req.query.category });
+    }
+
+    const events = await query;
 
     res.status(200).json(events);
   } catch (error) {

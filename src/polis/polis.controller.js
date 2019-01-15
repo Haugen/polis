@@ -43,7 +43,7 @@ exports.getLatestEvents = async (req, res, next) => {
     let limit = Number(req.query.limit) || 10;
 
     const query = Event.find()
-      .sort({ id: 'desc' })
+      .sort({ datetime: 'desc' })
       .limit(limit);
 
     if (req.query.location) {
@@ -87,6 +87,32 @@ exports.getLocations = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({
       message: 'Error getting categories.',
+      errors: error
+    });
+  }
+};
+
+/**
+ * Used to update the datetime field on every record, moving it from String type
+ * to Date type.
+ */
+exports.updateDate = async (req, res, next) => {
+  try {
+    const records = await Event.find();
+
+    records.forEach(async record => {
+      await Event.updateOne(
+        { id: record.id },
+        { $set: { datetime: record.datetime } }
+      );
+    });
+
+    res.status(200).json({
+      message: 'Records updated.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error updating records.',
       errors: error
     });
   }
